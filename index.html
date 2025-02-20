@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Text</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        #copy-message {
+            position: fixed;
+            top: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: none;
+        }
+        #close-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="copy-message">📋 Link Copy Ho Gaya!</div>
+    <button id="close-btn" onclick="goBack()">🔙 Wapas Jao</button>
+
+    <script>
+        function copyText() {
+            navigator.clipboard.writeText("99990110740209").then(() => {
+                
+                // **Mobile ka Theme Check Karna**
+                let isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                let messageBox = document.getElementById("copy-message");
+                let closeBtn = document.getElementById("close-btn");
+                
+                // **Agar Dark Mode hai to Light Color ka Message, aur vice-versa**
+                if (isDarkMode) {
+                    messageBox.style.backgroundColor = "#ffffff"; // Light background
+                    messageBox.style.color = "#000000"; // Black text
+                } else {
+                    messageBox.style.backgroundColor = "#333333"; // Dark background
+                    messageBox.style.color = "#ffffff"; // White text
+                }
+                
+                messageBox.style.display = "block"; // Message Show karna
+                
+                // **350ms me text copy ho jayega (kam time rakha hai)**
+                setTimeout(() => {
+                    window.close(); // Auto-close karna
+
+                    // **Agar close na ho (iPhone/Safari) to "Wapas Jao" ka button show karna**
+                    setTimeout(() => {
+                        if (!window.closed) {
+                            closeBtn.style.display = "block";
+                        }
+                    }, 300);
+                    
+                }, 350); 
+
+                // **Message kam se kam 2 second show hoga**
+                setTimeout(() => {
+                    messageBox.style.display = "none";
+                }, 2000);
+            });
+        }
+
+        function goBack() {
+            history.back(); // Jahan se aaye wahan wapas bhej dega
+        }
+
+        // **Jaise hi page load hoga, text copy aur auto-close hoga**
+        copyText();
+    </script>
+</body>
+</html>
